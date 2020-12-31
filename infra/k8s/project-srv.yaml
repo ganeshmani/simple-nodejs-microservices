@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-depl
+spec:
+  selector:
+    matchLabels:
+      app: projects
+  template:
+    metadata:
+      labels:
+        app: projects
+    spec:
+      containers:
+        - name: projects
+          image: ganeshmani009/projectservice
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 4500
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: project-srv-clusterip
+spec:
+  selector:
+    app: projects
+  ports:
+    - name: projects
+      protocol: TCP
+      port: 4500
+      targetPort: 4500
